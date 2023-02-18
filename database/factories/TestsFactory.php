@@ -14,7 +14,10 @@ class TestsFactory extends Factory
     public function definition()
     {
         return [
-            //
+        
+            'name_test' => $this->faker->word(),
+            'description_test' => $this->faker->word(),
+            'date_test' => $this->faker->date($format = 'Y-m-d', $max = 'now')
         ];
     }
 }

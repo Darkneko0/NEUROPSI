@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Therapists extends Model
 {
     use HasFactory;
+
+   
 }

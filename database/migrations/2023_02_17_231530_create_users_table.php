@@ -20,9 +20,9 @@ class CreateUsersTable extends Migration
             $table->string('apm_therapist');
             $table->string('specialty');
             $table->string('user_name')->unique();
-            $table->string('phone');
+            $table->integer('phone');
             $table->string('password');
-            $table->string('professional_license');
+            $table->integer('professional_license');
             $table->timestamps();
         });
     }

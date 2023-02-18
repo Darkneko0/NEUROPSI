@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Tests extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'name_test',
+        'description_test',
+        'date_test'
+    ];
+
+    public function therapistTest()
+    {
+        return $this->hasMany(TherapistTests::class);
+    }
 }

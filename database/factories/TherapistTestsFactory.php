@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Patients;
+use App\Models\Tests;
+use App\Models\TherapistPatients;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TherapistTestsFactory extends Factory
@@ -14,7 +17,10 @@ class TherapistTestsFactory extends Factory
     public function definition()
     {
         return [
-            //
+            
+            'therapist_id' => TherapistPatients::inRandomOrder()->first(),
+            'test_id' => Tests::inRandomOrder()->first(),
+
         ];
     }
 }
