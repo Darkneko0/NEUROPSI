@@ -3,84 +3,66 @@
 namespace App\Http\Controllers;
 
 use App\Models\Patients;
-use App\Http\Requests\StorePatientsRequest;
-use App\Http\Requests\UpdatePatientsRequest;
+use App\Http\Controllers\ApiController;
+use Illuminate\Http\Request;
 
-class PatientsController extends Controller
+class PatientsController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        //
+        $addresses = Patients::all();
+
+        return $this->successResponse([
+            "data" => $addresses,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+
+    public function store(Request $request)
     {
-        //
+        $patient = new Patients();
+        $patient->name_patient = $request->name_patient;
+        $patient->app_patient = $request->app_patient;
+        $patient->apm_patient = $request->apm_patient;
+        $patient->birth = $request->birth;
+        $patient->gender = $request->gender;
+        $patient->email = $request->email;
+        $patient->phone = $request->phone;
+        $patient->save();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StorePatientsRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StorePatientsRequest $request)
+    public function show(Patients $patient, $id)
     {
-        //
+     
+        $patient = Patients::findOrfail($id);
+        return $this->showOne($patient);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Patients  $patients
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Patients $patients)
+
+    public function update(Request $request, $id)
     {
-        //
+
+        $patient = Patients::findOrFail($request->id);
+        $patient->name_patient = $request->name_patient;
+        $patient->app_patient = $request->app_patient;
+        $patient->apm_patient = $request->apm_patient;
+        $patient->birth = $request->birth;
+        $patient->gender = $request->gender;
+        $patient->email = $request->email;
+        $patient->phone = $request->phone;
+        return $this->successResponse([
+            "Mensaje" => "¡Actualizado con éxito!",
+            $patient->save(), 200
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Patients  $patients
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Patients $patients)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdatePatientsRequest  $request
-     * @param  \App\Models\Patients  $patients
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdatePatientsRequest $request, Patients $patients)
+    public function destroy(Request $request, $id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Patients  $patients
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Patients $patients)
-    {
-        //
+        $patient = Patients::destroy($request->id);
+        return $this->successResponse([
+            "Mensaje" => "¡Eliminado con éxito!",
+        ]);
     }
 }
