@@ -3,84 +3,54 @@
 namespace App\Http\Controllers;
 
 use App\Models\RoleTherapists;
-use App\Http\Requests\StoreRoleTherapistsRequest;
+use Illuminate\Http\Request;
 use App\Http\Requests\UpdateRoleTherapistsRequest;
+use App\Http\Controllers\ApiController;
 
-class RoleTherapistsController extends Controller
+class RoleTherapistsController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        //
+        $roleTherapists = RoleTherapists::all();
+        return $this->successResponse([
+            "data" => $roleTherapists,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+
+    public function store(Request $request)
     {
-        //
+        $roleTherapists = new RoleTherapists();
+        $roleTherapists->role_id = $request->role_id;
+        $roleTherapists->user_id = $request->user_id;
+        $roleTherapists->save();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreRoleTherapistsRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreRoleTherapistsRequest $request)
+
+    public function show(RoleTherapists $patient, $id)
     {
-        //
+        $roleTherapists = RoleTherapists::findOrfail($id);
+        return $this->showOne($roleTherapists);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\RoleTherapists  $roleTherapists
-     * @return \Illuminate\Http\Response
-     */
-    public function show(RoleTherapists $roleTherapists)
+    public function update(Request $request, $id)
     {
-        //
+        $roleTherapists = RoleTherapists::findOrFail($request->id);
+        $roleTherapists->role_id = $request->role_id;
+        $roleTherapists->user_id = $request->user_id;
+
+        return $this->successResponse([
+            "Mensaje" => "¡Actualizado con éxito!",
+            $roleTherapists->save(), 200
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\RoleTherapists  $roleTherapists
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(RoleTherapists $roleTherapists)
+    public function destroy(Request $request, $id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateRoleTherapistsRequest  $request
-     * @param  \App\Models\RoleTherapists  $roleTherapists
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateRoleTherapistsRequest $request, RoleTherapists $roleTherapists)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\RoleTherapists  $roleTherapists
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(RoleTherapists $roleTherapists)
-    {
-        //
+        $roleTherapists = RoleTherapists::destroy($request->id);
+        return $this->successResponse([
+            "Mensaje" => "¡Eliminado con éxito!",
+        ]);
     }
 }

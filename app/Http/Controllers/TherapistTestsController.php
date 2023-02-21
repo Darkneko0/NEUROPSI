@@ -3,84 +3,52 @@
 namespace App\Http\Controllers;
 
 use App\Models\TherapistTests;
-use App\Http\Requests\StoreTherapistTestsRequest;
-use App\Http\Requests\UpdateTherapistTestsRequest;
+use App\Http\Controllers\ApiController;
+use Illuminate\Http\Request;
 
-class TherapistTestsController extends Controller
+class TherapistTestsController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        //
+        $therapistTests = TherapistTests::all();
+        return $this->successResponse([
+            "data" => $therapistTests,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function store(Request $request)
     {
-        //
+        $therapistTests = new TherapistTests();
+        $therapistTests->therapist_id = $request->therapist_id;
+        $therapistTests->test_id = $request->test_id;
+        $therapistTests->save();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreTherapistTestsRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreTherapistTestsRequest $request)
+    public function show(TherapistTests $patient, $id)
     {
-        //
+        $therapistTests = TherapistTests::findOrfail($id);
+        return $this->showOne($therapistTests);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\TherapistTests  $therapistTests
-     * @return \Illuminate\Http\Response
-     */
-    public function show(TherapistTests $therapistTests)
+
+    public function update(Request $request, $id)
     {
-        //
+        $therapistTests = TherapistTests::findOrFail($request->id);
+        $therapistTests->therapist_id = $request->therapist_id;
+        $therapistTests->test_id = $request->test_id;
+
+        return $this->successResponse([
+            "Mensaje" => "¡Actualizado con éxito!",
+            $therapistTests->save(), 200
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\TherapistTests  $therapistTests
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(TherapistTests $therapistTests)
+    public function destroy(Request $request, $id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateTherapistTestsRequest  $request
-     * @param  \App\Models\TherapistTests  $therapistTests
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateTherapistTestsRequest $request, TherapistTests $therapistTests)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\TherapistTests  $therapistTests
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(TherapistTests $therapistTests)
-    {
-        //
+        $therapistTests = TherapistTests::destroy($request->id);
+        return $this->successResponse([
+            "Mensaje" => "¡Eliminado con éxito!",
+        ]);
     }
 }

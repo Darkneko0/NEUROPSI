@@ -3,84 +3,52 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tests;
-use App\Http\Requests\StoreTestsRequest;
-use App\Http\Requests\UpdateTestsRequest;
+use App\Http\Controllers\ApiController;
+use Illuminate\Http\Request;
 
-class TestsController extends Controller
+class TestsController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        //
+        $test = Tests::all();
+        return $this->successResponse([
+            "data" => $test,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+ 
+    public function store(Request $request)
     {
-        //
+        $test = new Tests();
+        $test->name_test = $request->name_test;
+        $test->description_test = $request->description_test;
+        $test->date_test = $request->date_test;
+        $test->save();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreTestsRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreTestsRequest $request)
+    public function show(Tests $patient, $id)
     {
-        //
+        $test = Tests::findOrfail($id);
+        return $this->showOne($test);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Tests  $tests
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Tests $tests)
+    public function update(Request $request, $id)
     {
-        //
+        $test = Tests::findOrFail($request->id);
+        $test->name_test = $request->name_test;
+        $test->description_test = $request->description_test;
+        $test->date_test = $request->date_test;
+        return $this->successResponse([
+            "Mensaje" => "¡Actualizado con éxito!",
+            $test->save(), 200
+        ]);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Tests  $tests
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Tests $tests)
+    public function destroy(Request $request, $id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateTestsRequest  $request
-     * @param  \App\Models\Tests  $tests
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateTestsRequest $request, Tests $tests)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Tests  $tests
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Tests $tests)
-    {
-        //
+        $test = Tests::destroy($request->id);
+        return $this->successResponse([
+            "Mensaje" => "¡Eliminado con éxito!",
+        ]);
     }
 }

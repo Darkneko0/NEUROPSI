@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Roles;
-use App\Http\Requests\StoreRolesRequest;
-use App\Http\Requests\UpdateRolesRequest;
 use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 
@@ -38,13 +36,23 @@ class RolesController extends ApiController
 
 
 
-    public function update(UpdateRolesRequest $request, Roles $roles)
+    public function update(Request $request, $id)
     {
-        //
+        $role = Roles::findOrFail($request->id);
+        $role->role_name = $request->role_name;
+        $role->description = $request->description;
+
+        return $this->successResponse([
+            "Mensaje" => "¡Actualizado con éxito!",
+            $role->save(), 200
+        ]);
     }
 
-    public function destroy(Roles $roles)
+    public function destroy(Request $request, $id)
     {
-        //
+        $role = Roles::destroy($request->id);
+        return $this->successResponse([
+            "Mensaje" => "¡Eliminado con éxito!",
+        ]);
     }
 }

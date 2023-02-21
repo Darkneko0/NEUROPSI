@@ -3,84 +3,55 @@
 namespace App\Http\Controllers;
 
 use App\Models\TherapistPatients;
-use App\Http\Requests\StoreTherapistPatientsRequest;
-use App\Http\Requests\UpdateTherapistPatientsRequest;
+use App\Http\Controllers\ApiController;
+use Illuminate\Http\Request;
 
-class TherapistPatientsController extends Controller
+class TherapistPatientsController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        //
+        $therapistPatients = TherapistPatients::all();
+        return $this->successResponse([
+            "data" => $therapistPatients,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function store(Request $request)
     {
-        //
+        $therapistPatients = new TherapistPatients();
+        $therapistPatients->reason_for_consultation = $request->reason_for_consultation;
+        $therapistPatients->date_consultation = $request->date_consultation;
+        $therapistPatients->patient_id = $request->patient_id;
+        $therapistPatients->user_id = $request->user_id;
+        $therapistPatients->save();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreTherapistPatientsRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreTherapistPatientsRequest $request)
+    public function show(TherapistPatients $patient, $id)
     {
-        //
+        $therapistPatients = TherapistPatients::findOrfail($id);
+        return $this->showOne($therapistPatients);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\TherapistPatients  $therapistPatients
-     * @return \Illuminate\Http\Response
-     */
-    public function show(TherapistPatients $therapistPatients)
+    public function update(Request $request, $id)
     {
-        //
+        $therapistPatients = TherapistPatients::findOrFail($request->id);
+        $therapistPatients->reason_for_consultation = $request->reason_for_consultation;
+        $therapistPatients->date_consultation = $request->date_consultation;
+        $therapistPatients->patient_id = $request->patient_id;
+        $therapistPatients->user_id = $request->user_id;
+
+        return $this->successResponse([
+            "Mensaje" => "¡Actualizado con éxito!",
+            $therapistPatients->save(), 200
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\TherapistPatients  $therapistPatients
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(TherapistPatients $therapistPatients)
+    public function destroy(Request $request, $id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateTherapistPatientsRequest  $request
-     * @param  \App\Models\TherapistPatients  $therapistPatients
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateTherapistPatientsRequest $request, TherapistPatients $therapistPatients)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\TherapistPatients  $therapistPatients
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(TherapistPatients $therapistPatients)
-    {
-        //
+        $therapistPatients = TherapistPatients::destroy($request->id);
+        return $this->successResponse([
+            "Mensaje" => "¡Eliminado con éxito!",
+        ]);
     }
 }
