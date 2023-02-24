@@ -22,7 +22,11 @@ class TherapistTestsController extends ApiController
         $therapistTests = new TherapistTests();
         $therapistTests->therapist_id = $request->therapist_id;
         $therapistTests->test_id = $request->test_id;
-        $therapistTests->save();
+        return $this->successResponse([
+            "data"=>"Prueba - Terapeuta dado de alta con éxito",
+            $therapistTests->save()
+        ]);
+       
     }
 
     public function show(TherapistTests $patient, $id)

@@ -24,7 +24,12 @@ class RolesController extends ApiController
         $role = new Roles();
         $role->role_name = $request->role_name;
         $role->description = $request->description;
-        $role->save();
+        return $this->successResponse([
+            "data"=>"Rol dado de alta con éxito",
+            $role->save()
+        ]);
+       
+        
     }
 
     public function show(Roles $patient, $id)

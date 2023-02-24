@@ -24,7 +24,11 @@ class RoleTherapistsController extends ApiController
         $roleTherapists = new RoleTherapists();
         $roleTherapists->role_id = $request->role_id;
         $roleTherapists->user_id = $request->user_id;
-        $roleTherapists->save();
+        return $this->successResponse([
+            "data"=>"Rol Terapeuta dado de alta con éxito",
+            $roleTherapists->save()
+        ]);
+        
     }
 
 

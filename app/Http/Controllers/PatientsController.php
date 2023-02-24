@@ -29,7 +29,13 @@ class PatientsController extends ApiController
         $patient->gender = $request->gender;
         $patient->email = $request->email;
         $patient->phone = $request->phone;
-        $patient->save();
+
+        return $this->successResponse([
+            "data"=>"Paciente dado de alta con éxito",
+            $patient->save()
+        ]);
+
+        
     }
 
     public function show(Patients $patient, $id)

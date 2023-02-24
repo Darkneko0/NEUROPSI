@@ -24,7 +24,12 @@ class TherapistPatientsController extends ApiController
         $therapistPatients->date_consultation = $request->date_consultation;
         $therapistPatients->patient_id = $request->patient_id;
         $therapistPatients->user_id = $request->user_id;
-        $therapistPatients->save();
+        return $this->successResponse([
+            "data"=>"Terapeuta - Paciente dado de alta con éxito",
+            $therapistPatients->save()
+        ]);
+
+        
     }
 
     public function show(TherapistPatients $patient, $id)

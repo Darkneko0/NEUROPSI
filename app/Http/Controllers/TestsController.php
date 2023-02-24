@@ -24,7 +24,12 @@ class TestsController extends ApiController
         $test->name_test = $request->name_test;
         $test->description_test = $request->description_test;
         $test->date_test = $request->date_test;
-        $test->save();
+        return $this->successResponse([
+            "data"=>"Prueba dado de alta con éxito",
+            $test->save()
+        ]);
+        
+        
     }
 
     public function show(Tests $patient, $id)
